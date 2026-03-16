@@ -1,0 +1,8 @@
+# Binary
+tsingress
+
+# Tailscale state
+/tsnet-*
+
+# Cert cache
+/certs/

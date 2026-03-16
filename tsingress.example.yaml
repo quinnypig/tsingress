@@ -1,0 +1,29 @@
+# tsingress configuration
+# Copy to /etc/tsingress/tsingress.yaml and edit.
+
+# Required: Tailscale configuration
+tailscale:
+  authkey: "tskey-auth-xxxxx"  # or set TS_AUTHKEY env var
+  hostname: "ingress"          # how this node appears in the tailnet
+  # state_dir: "/var/lib/tsingress/tsnet"  # optional, defaults shown
+
+# Optional: ACME / Let's Encrypt configuration
+acme:
+  email: "ops@example.com"
+  # cert_dir: "/var/lib/tsingress/certs"  # optional, defaults shown
+
+# Routes: each maps a public domain to a tailnet backend
+routes:
+  - domain: billing.example.com
+    backend: billing-server:8080
+
+  - domain: grafana.example.com
+    backend: grafana.tail-scale.ts.net:3000
+    health_check:
+      path: /api/health
+      interval: 30s
+
+  - domain: wiki.example.com
+    backend: 100.64.0.5:8080
+    headers:
+      X-Forwarded-Host: wiki.example.com
