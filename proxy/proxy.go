@@ -136,7 +136,7 @@ func (r *Router) HealthHandler() http.HandlerFunc {
 			for _, d := range domains {
 				if r.HealthFunc(d) == "healthy" {
 					w.WriteHeader(http.StatusOK)
-					w.Write([]byte("OK\n"))
+					_, _ = w.Write([]byte("OK\n"))
 					return
 				}
 			}
@@ -144,7 +144,7 @@ func (r *Router) HealthHandler() http.HandlerFunc {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK\n"))
+		_, _ = w.Write([]byte("OK\n"))
 	}
 }
 

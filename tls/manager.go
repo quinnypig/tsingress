@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"sync"
 
 	"golang.org/x/crypto/acme/autocert"
@@ -54,9 +55,9 @@ func (m *Manager) TLSConfig() *tls.Config {
 }
 
 // HTTPHandler returns an http.Handler for ACME http-01 challenges.
-// Pass this as the handler for your :80 listener.
-func (m *Manager) HTTPHandler() autocert.Manager {
-	return *m.acme
+// Pass this as the handler for your :80 listener; fallback handles non-ACME requests.
+func (m *Manager) HTTPHandler(fallback http.Handler) http.Handler {
+	return m.acme.HTTPHandler(fallback)
 }
 
 // SetDomains atomically updates the set of allowed domains.

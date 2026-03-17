@@ -149,7 +149,7 @@ func (c *Checker) probe(ctx context.Context, b Backend) {
 		)
 		return
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode >= 200 && resp.StatusCode < 400 {
 		c.setState(b.Domain, Healthy)

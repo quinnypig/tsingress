@@ -86,10 +86,9 @@ func main() {
 	}
 
 	// HTTP server on :80 for ACME challenges + redirect.
-	acmeMgr := tlsMgr.HTTPHandler()
 	httpServer := &http.Server{
 		Addr: ":80",
-		Handler: acmeMgr.HTTPHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		Handler: tlsMgr.HTTPHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			target := "https://" + r.Host + r.URL.RequestURI()
 			http.Redirect(w, r, target, http.StatusMovedPermanently)
 		})),
@@ -136,11 +135,17 @@ func main() {
 			checker.Stop()
 
 			shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 30*time.Second)
-			defer shutdownCancel()
 
-			httpsServer.Shutdown(shutdownCtx)
-			httpServer.Shutdown(shutdownCtx)
-			node.Close()
+			if err := httpsServer.Shutdown(shutdownCtx); err != nil {
+				logger.Error("HTTPS server shutdown error", "error", err)
+			}
+			if err := httpServer.Shutdown(shutdownCtx); err != nil {
+				logger.Error("HTTP server shutdown error", "error", err)
+			}
+			if err := node.Close(); err != nil {
+				logger.Error("tailscale node close error", "error", err)
+			}
+			shutdownCancel()
 
 			logger.Info("shutdown complete")
 			os.Exit(0)

@@ -14,7 +14,6 @@ type Config struct {
 	Tailscale TailscaleConfig `yaml:"tailscale"`
 	ACME      ACMEConfig      `yaml:"acme"`
 	Routes    []Route         `yaml:"routes"`
-	Metrics   MetricsConfig   `yaml:"metrics"`
 }
 
 // TailscaleConfig controls the embedded tsnet node.
@@ -42,12 +41,6 @@ type Route struct {
 type HealthCheck struct {
 	Path     string        `yaml:"path"`
 	Interval time.Duration `yaml:"interval"`
-}
-
-// MetricsConfig controls the Prometheus metrics endpoint.
-type MetricsConfig struct {
-	Enabled bool   `yaml:"enabled"`
-	Addr    string `yaml:"addr"`
 }
 
 // Load reads and parses a tsingress YAML config file.
