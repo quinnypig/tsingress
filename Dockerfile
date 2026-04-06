@@ -6,7 +6,7 @@ COPY . .
 ARG VERSION=dev
 RUN CGO_ENABLED=0 go build -ldflags "-s -w -X main.version=${VERSION}" -o /tsingress .
 
-FROM alpine:3.21
+FROM alpine:3.23
 RUN apk add --no-cache ca-certificates && \
     adduser -D -H -s /sbin/nologin tsingress
 COPY --from=builder /tsingress /usr/local/bin/tsingress
