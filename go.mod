@@ -5,7 +5,7 @@ go 1.26.2
 require (
 	golang.org/x/crypto v0.50.0
 	gopkg.in/yaml.v3 v3.0.1
-	tailscale.com v1.98.0
+	tailscale.com v1.98.1
 )
 
 require (
