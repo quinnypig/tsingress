@@ -1,11 +1,11 @@
 module github.com/quinnypig/tsingress
 
-go 1.26.2
+go 1.26.3
 
 require (
 	golang.org/x/crypto v0.51.0
 	gopkg.in/yaml.v3 v3.0.1
-	tailscale.com v1.98.1
+	tailscale.com v1.98.2
 )
 
 require (
